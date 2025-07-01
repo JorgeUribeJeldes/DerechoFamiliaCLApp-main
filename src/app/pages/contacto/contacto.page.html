@@ -1,0 +1,267 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Contacto y Asesoría</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="toggleDarkMode()">
+        <ion-icon name="moon-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" id="main-content">
+  <!-- Banner principal -->
+  <div class="banner-container">
+    <div class="banner-content">
+      <h1>Asesoría Legal</h1>
+      <p>Conecta con profesionales especializados en Derecho de Familia</p>
+    </div>
+  </div>
+
+  <!-- Estado de conexión -->
+  <ion-chip *ngIf="!isOnline" color="warning" class="offline-chip">
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+    <ion-label>Modo sin conexión - Los mensajes se enviarán cuando tengas conexión</ion-label>
+  </ion-chip>
+
+  <!-- Información de contacto -->
+  <ion-card class="info-card">
+    <ion-card-header>
+      <div class="card-header-content">
+        <ion-icon name="information-circle-outline" color="primary"></ion-icon>
+        <ion-card-title>Información de Contacto</ion-card-title>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="contact-info">
+        <div class="contact-item">
+          <ion-icon name="call-outline" color="primary"></ion-icon>
+          <div>
+            <p><strong>Teléfono de Consultas</strong></p>
+            <p>+56 2 2123 4567</p>
+            <small>Lunes a Viernes, 9:00 - 18:00 hrs</small>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <ion-icon name="mail-outline" color="primary"></ion-icon>
+          <div>
+            <p><strong>Correo Electrónico</strong></p>
+            <p>consultas&#64;derechofamiliacl.cl</p>
+            <small>Respuesta en 24-48 horas hábiles</small>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <ion-icon name="location-outline" color="primary"></ion-icon>
+          <div>
+            <p><strong>Oficinas</strong></p>
+            <p>Av. Providencia 123, Oficina 456</p>
+            <p>Providencia, Santiago</p>
+            <small>Atención con cita previa</small>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Formulario de contacto -->
+  <ion-card class="contact-form-card">
+    <ion-card-header>
+      <div class="card-header-content">
+        <ion-icon name="chatbubble-outline" color="secondary"></ion-icon>
+        <ion-card-title>Formulario de Consulta</ion-card-title>
+      </div>
+      <ion-card-subtitle>
+        Completa este formulario para recibir asesoría personalizada
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="contactForm" (ngSubmit)="enviarContacto()">
+        <ion-item class="form-item">
+          <ion-label position="floating">Nombre completo *</ion-label>
+          <ion-input 
+            formControlName="nombre" 
+            type="text"
+            placeholder="Ingresa tu nombre completo">
+          </ion-input>
+          <ion-note slot="error" *ngIf="contactForm.get('nombre')?.invalid && contactForm.get('nombre')?.touched">
+            El nombre es obligatorio
+          </ion-note>
+        </ion-item>
+
+        <ion-item class="form-item">
+          <ion-label position="floating">Correo electrónico *</ion-label>
+          <ion-input 
+            formControlName="correo" 
+            type="email"
+            placeholder="ejemplo@correo.cl">
+          </ion-input>
+          <ion-note slot="error" *ngIf="contactForm.get('correo')?.invalid && contactForm.get('correo')?.touched">
+            Ingresa un correo válido
+          </ion-note>
+        </ion-item>
+
+        <ion-item class="form-item">
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input 
+            formControlName="telefono" 
+            type="tel"
+            placeholder="+56 9 1234 5678">
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="form-item">
+          <ion-label position="floating">Tema de consulta *</ion-label>
+          <ion-select 
+            formControlName="tema" 
+            placeholder="Selecciona el tema"
+            interface="action-sheet">
+            <ion-select-option value="pension">Pensión Alimenticia</ion-select-option>
+            <ion-select-option value="cuidado">Cuidado Personal</ion-select-option>
+            <ion-select-option value="divorcio">Divorcio</ion-select-option>
+            <ion-select-option value="violencia">Violencia Intrafamiliar</ion-select-option>
+            <ion-select-option value="matrimonio">Régimen Matrimonial</ion-select-option>
+            <ion-select-option value="adopcion">Adopción</ion-select-option>
+            <ion-select-option value="otros">Otros</ion-select-option>
+          </ion-select>
+          <ion-note slot="error" *ngIf="contactForm.get('tema')?.invalid && contactForm.get('tema')?.touched">
+            Selecciona un tema de consulta
+          </ion-note>
+        </ion-item>
+
+        <ion-item class="form-item">
+          <ion-label position="floating">Urgencia</ion-label>
+          <ion-select 
+            formControlName="urgencia" 
+            placeholder="Selecciona la urgencia"
+            interface="popover">
+            <ion-select-option value="baja">Baja - Consulta general</ion-select-option>
+            <ion-select-option value="media">Media - Necesito orientación</ion-select-option>
+            <ion-select-option value="alta">Alta - Situación urgente</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="form-item textarea-item">
+          <ion-label position="floating">Describe tu consulta *</ion-label>
+          <ion-textarea 
+            formControlName="mensaje"
+            rows="5"
+            placeholder="Describe detalladamente tu situación, incluye fechas relevantes y documentos que tengas disponibles">
+          </ion-textarea>
+          <ion-note slot="error" *ngIf="contactForm.get('mensaje')?.invalid && contactForm.get('mensaje')?.touched">
+            Describe tu consulta (mínimo 20 caracteres)
+          </ion-note>
+        </ion-item>
+
+        <div class="privacy-notice">
+          <ion-checkbox formControlName="aceptaPrivacidad"></ion-checkbox>
+          <ion-label class="privacy-label">
+            Acepto la <a href="#" (click)="showPrivacyPolicy()">política de privacidad</a> 
+            y autorizo el tratamiento de mis datos personales *
+          </ion-label>
+        </div>
+
+        <div class="form-actions">
+          <ion-button 
+            expand="full" 
+            type="submit" 
+            [disabled]="contactForm.invalid || isSubmitting"
+            class="submit-button">
+            <ion-icon name="send-outline" slot="start" *ngIf="!isSubmitting"></ion-icon>
+            <ion-spinner name="circular" slot="start" *ngIf="isSubmitting"></ion-spinner>
+            {{ isSubmitting ? 'Enviando...' : 'Enviar Consulta' }}
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Servicios adicionales -->
+  <ion-card class="services-card">
+    <ion-card-header>
+      <div class="card-header-content">
+        <ion-icon name="business-outline" color="tertiary"></ion-icon>
+        <ion-card-title>Servicios Adicionales</ion-card-title>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="services-grid">
+        <div class="service-item">
+          <ion-icon name="document-text-outline" color="primary"></ion-icon>
+          <h4>Redacción de Documentos</h4>
+          <p>Contratos, acuerdos y documentos legales</p>
+        </div>
+        
+        <div class="service-item">
+          <ion-icon name="people-outline" color="secondary"></ion-icon>
+          <h4>Mediación Familiar</h4>
+          <p>Resolución de conflictos extrajudiciales</p>
+        </div>
+        
+        <div class="service-item">
+          <ion-icon name="library-outline" color="tertiary"></ion-icon>
+          <h4>Representación Legal</h4>
+          <p>Acompañamiento en procesos judiciales</p>
+        </div>
+        
+        <div class="service-item">
+          <ion-icon name="shield-checkmark-outline" color="success"></ion-icon>
+          <h4>Asesoría Preventiva</h4>
+          <p>Evita problemas legales futuros</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Horarios y disponibilidad -->
+  <ion-card class="schedule-card">
+    <ion-card-header>
+      <div class="card-header-content">
+        <ion-icon name="time-outline" color="primary"></ion-icon>
+        <ion-card-title>Horarios de Atención</ion-card-title>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="schedule-info">
+        <div class="schedule-item">
+          <span class="day">Lunes a Viernes</span>
+          <span class="hours">9:00 - 18:00 hrs</span>
+        </div>
+        <div class="schedule-item">
+          <span class="day">Sábados</span>
+          <span class="hours">9:00 - 13:00 hrs</span>
+        </div>
+        <div class="schedule-item emergency">
+          <span class="day">Emergencias</span>
+          <span class="hours">24/7 (casos urgentes)</span>
+        </div>
+      </div>
+      
+      <div class="emergency-notice">
+        <ion-icon name="warning-outline" color="warning"></ion-icon>
+        <p>Para emergencias (violencia intrafamiliar, medidas de protección), 
+           contáctanos inmediatamente al +56 9 8765 4321</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Disclaimer legal -->
+  <ion-card class="disclaimer-card">
+    <ion-card-content>
+      <div class="disclaimer-content">
+        <ion-icon name="shield-outline" color="medium"></ion-icon>
+        <div>
+          <h4>Aviso Legal</h4>
+          <p>Esta aplicación proporciona información general sobre Derecho de Familia en Chile. 
+             No constituye asesoría legal específica. Para casos particulares, consulta con un abogado especialista.</p>
+          <p class="disclaimer-note">Los datos enviados a través de este formulario son confidenciales 
+             y están protegidos por el secreto profesional.</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

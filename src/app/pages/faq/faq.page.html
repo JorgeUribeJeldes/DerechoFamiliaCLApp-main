@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Preguntas Frecuentes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="toggleDarkMode()">
+        <ion-icon name="moon-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" id="main-content">
+  <!-- Banner principal -->
+  <div class="banner-container">
+    <div class="banner-content">
+      <h1>Preguntas Frecuentes</h1>
+      <p>Encuentra respuestas rápidas a las consultas más comunes sobre Derecho de Familia en Chile</p>
+    </div>
+  </div>
+
+  <!-- Buscador -->
+  <ion-card class="search-card">
+    <ion-card-content>
+      <ion-searchbar 
+        [(ngModel)]="searchTerm" 
+        (ionInput)="filterQuestions()" 
+        placeholder="Buscar preguntas..."
+        show-clear-button="focus">
+      </ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Filtros por categoría -->
+  <ion-card class="filter-card">
+    <ion-card-content>
+      <ion-segment [(ngModel)]="selectedCategory" (ionChange)="filterByCategory()">
+        <ion-segment-button value="todas">
+          <ion-label>Todas</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="pension">
+          <ion-label>Pensión</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="cuidado">
+          <ion-label>Cuidado</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="divorcio">
+          <ion-label>Divorcio</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="matrimonio">
+          <ion-label>Matrimonio</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="general">
+          <ion-label>General</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Estado de conexión -->
+  <ion-chip *ngIf="!isOnline" color="warning" class="offline-chip">
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+    <ion-label>Modo sin conexión - Datos guardados localmente</ion-label>
+  </ion-chip>
+
+  <!-- Lista de preguntas filtradas -->
+  <div class="faq-container">
+    <ion-card *ngFor="let pregunta of filteredQuestions; trackBy: trackByPregunta" class="faq-card">
+      <ion-card-header>
+        <div class="faq-header">
+          <ion-chip [color]="getCategoryColor(pregunta.categoria)" size="small">
+            <ion-icon [name]="getCategoryIcon(pregunta.categoria)"></ion-icon>
+            <ion-label>{{ pregunta.categoria }}</ion-label>
+          </ion-chip>
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            (click)="toggleQuestion(pregunta)"
+            [attr.aria-expanded]="pregunta.expanded">
+            <ion-icon [name]="pregunta.expanded ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+          </ion-button>
+        </div>
+        <ion-card-title class="faq-question">
+          {{ pregunta.pregunta }}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="pregunta.expanded" class="faq-answer">
+        <p>{{ pregunta.respuesta }}</p>
+        <div class="faq-meta" *ngIf="pregunta.articulos">
+          <p><strong>Artículos relacionados:</strong></p>
+          <ul>
+            <li *ngFor="let articulo of pregunta.articulos">{{ articulo }}</li>
+          </ul>
+        </div>
+        <div class="faq-actions">
+          <ion-button fill="outline" size="small" (click)="shareQuestion(pregunta)">
+            <ion-icon name="share-outline" slot="start"></ion-icon>
+            Compartir
+          </ion-button>
+          <ion-button fill="outline" size="small" (click)="saveQuestion(pregunta)">
+            <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+            Guardar
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Mensaje cuando no hay resultados -->
+    <ion-card *ngIf="filteredQuestions.length === 0" class="no-results">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="search-outline" size="large" color="medium"></ion-icon>
+        <h3>No se encontraron preguntas</h3>
+        <p>Intenta con otros términos de búsqueda o selecciona una categoría diferente.</p>
+        <ion-button fill="outline" (click)="clearFilters()">
+          Mostrar todas las preguntas
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Contacto para más ayuda -->
+  <ion-card class="help-card">
+    <ion-card-content class="ion-text-center">
+      <h3>¿No encontraste lo que buscabas?</h3>
+      <p>Contáctanos para obtener asesoría personalizada</p>
+      <ion-button [routerLink]="'/contacto'" fill="solid" color="primary">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        Contactar Asesor
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

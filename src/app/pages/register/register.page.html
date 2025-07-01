@@ -1,0 +1,212 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro de Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="register-content">
+  <div class="register-container">
+    <ion-card class="register-card">
+      <ion-card-header>
+        <ion-card-title class="text-center">
+          <ion-icon name="person-add" size="large" color="primary"></ion-icon>
+          <h1>Crear Cuenta</h1>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="stacked">Nombre *</ion-label>
+                  <ion-input
+                    type="text"
+                    placeholder="Ingresa tu nombre"
+                    formControlName="firstName"
+                    [class.ion-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+                  ></ion-input>
+                </ion-item>
+              </ion-col>
+              
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="stacked">Apellido *</ion-label>
+                  <ion-input
+                    type="text"
+                    placeholder="Ingresa tu apellido"
+                    formControlName="lastName"
+                    [class.ion-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+                  ></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="stacked">Usuario *</ion-label>
+                  <ion-input
+                    type="text"
+                    placeholder="Elige un nombre de usuario"
+                    formControlName="username"
+                    [class.ion-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+                  ></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="stacked">Email *</ion-label>
+                  <ion-input
+                    type="email"
+                    placeholder="tu@email.com"
+                    formControlName="email"
+                    [class.ion-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                  ></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="stacked">Tipo de Usuario</ion-label>
+                  <ion-select formControlName="role" placeholder="Selecciona tu rol">
+                    <ion-select-option value="user">Usuario</ion-select-option>
+                    <ion-select-option value="admin">Administrador</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="stacked">Contraseña *</ion-label>
+                  <ion-input
+                    [type]="showPassword ? 'text' : 'password'"
+                    placeholder="Ingresa una contraseña segura"
+                    formControlName="password"
+                    [class.ion-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                  ></ion-input>
+                  <ion-button
+                    fill="clear"
+                    slot="end"
+                    (click)="togglePassword()"
+                    [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                  >
+                    <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+                  </ion-button>
+                </ion-item>
+
+                <!-- Indicador de fortaleza de contraseña -->
+                <div class="password-strength" *ngIf="registerForm.get('password')?.value">
+                  <ion-text color="medium">
+                    <small>Fortaleza de la contraseña:</small>
+                  </ion-text>
+                  <ion-progress-bar
+                    [value]="getPasswordStrengthValue()"
+                    [color]="getPasswordStrengthColor()"
+                  ></ion-progress-bar>
+                  
+                  <div class="password-requirements" *ngIf="!passwordStrength.isValid">
+                    <ion-text color="danger">
+                      <small>
+                        <div *ngFor="let error of passwordStrength.errors">• {{ error }}</div>
+                      </small>
+                    </ion-text>
+                  </div>
+                  
+                  <div class="password-success" *ngIf="passwordStrength.isValid">
+                    <ion-text color="success">
+                      <small>✓ Contraseña segura</small>
+                    </ion-text>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="stacked">Confirmar Contraseña *</ion-label>
+                  <ion-input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    placeholder="Confirma tu contraseña"
+                    formControlName="confirmPassword"
+                    [class.ion-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+                  ></ion-input>
+                  <ion-button
+                    fill="clear"
+                    slot="end"
+                    (click)="toggleConfirmPassword()"
+                    [attr.aria-label]="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                  >
+                    <ion-icon [name]="showConfirmPassword ? 'eye-off' : 'eye'"></ion-icon>
+                  </ion-button>
+                </ion-item>
+                
+                <div *ngIf="registerForm.get('confirmPassword')?.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" class="error-message">
+                  <ion-text color="danger">
+                    <small>Las contraseñas no coinciden</small>
+                  </ion-text>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item lines="none">
+                  <ion-checkbox [(ngModel)]="acceptTerms" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label class="terms-label">
+                    Acepto los 
+                    <ion-button 
+                      fill="clear" 
+                      size="small" 
+                      (click)="showTermsAndConditions()"
+                      color="primary"
+                    >
+                      términos y condiciones
+                    </ion-button>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-button
+                  expand="block"
+                  type="submit"
+                  [disabled]="registerForm.invalid || !acceptTerms || !passwordStrength.isValid || isLoading"
+                  class="register-button"
+                >
+                  <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+                  <span *ngIf="!isLoading">Registrarse</span>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12" class="text-center">
+                <ion-text color="medium">
+                  <p>¿Ya tienes una cuenta?</p>
+                </ion-text>
+                <ion-button fill="clear" routerLink="/login" color="primary">
+                  Iniciar Sesión
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

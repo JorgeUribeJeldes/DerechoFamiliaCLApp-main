@@ -1,0 +1,95 @@
+// Banner
+.banner-container {
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  padding: 24px;
+  margin: 16px;
+  border-radius: 16px;
+  text-align: center;
+
+  .banner-content {
+    h1 { color: white; font-size: 1.8rem; font-weight: 600; margin: 0 0 8px 0; }
+    p { color: rgba(255, 255, 255, 0.9); font-size: 1rem; margin: 0; }
+  }
+}
+
+// Cards base
+.search-card, .filter-card {
+  margin: 8px 16px;
+  border-radius: 12px;
+  ion-card-content { padding: 16px; }
+}
+
+// Contenedor FAQ
+.faq-container { padding: 0 8px 16px 8px; }
+
+// Cards de preguntas
+.faq-card {
+  margin: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover { transform: translateY(-2px); }
+
+  ion-card-header {
+    padding: 16px;
+    background: var(--ion-color-light);
+
+    .faq-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      ion-chip { margin: 0; font-size: 0.8rem; }
+    }
+
+    .faq-question { 
+      font-size: 1.1rem; 
+      font-weight: 600; 
+      color: var(--ion-color-dark); 
+      margin: 0; 
+    }
+  }
+
+  ion-card-content {
+    padding: 16px;
+
+    .faq-answer {
+      p { font-size: 1rem; line-height: 1.6; margin-bottom: 16px; }
+
+      .faq-meta {
+        background: var(--ion-color-light);
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
+    }
+  }
+}
+
+// Sin resultados
+.no-results {
+  margin: 16px;
+  text-align: center;
+  padding: 32px 16px;
+}
+
+// Card de ayuda
+.help-card {
+  margin: 16px;
+  background: linear-gradient(135deg, var(--ion-color-tertiary), var(--ion-color-secondary));
+  color: white;
+  border-radius: 16px;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .banner-container { 
+    margin: 8px; 
+    padding: 20px; 
+  }
+  .faq-card { 
+    margin: 8px 4px; 
+  }
+}

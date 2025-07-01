@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Derecho Familia CL - Ingreso</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <!-- Logo o título de la app -->
+    <div class="app-logo">
+      <ion-icon name="balance-outline" size="large" color="primary"></ion-icon>
+      <h1>Derecho Familia CL</h1>
+      <p>Accede a información legal actualizada</p>
+    </div>
+
+    <!-- Formulario de login -->
+    <ion-card class="login-card">
+      <ion-card-header>
+        <ion-card-title>Iniciar Sesión</ion-card-title>
+        <ion-card-subtitle>Ingresa tus credenciales para continuar</ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <form [formGroup]="formularioLogin" (ngSubmit)="login()">
+          <ion-item [class.ion-invalid]="formularioLogin.get('correo')?.invalid && formularioLogin.get('correo')?.touched">
+            <ion-label position="floating">Usuario o Correo Electrónico</ion-label>
+            <ion-input type="text" formControlName="correo" placeholder="usuario@correo.com o usuario"></ion-input>
+            <ion-icon name="person-outline" slot="end"></ion-icon>
+          </ion-item>
+          
+          <div class="error-text" *ngIf="formularioLogin.get('correo')?.invalid && formularioLogin.get('correo')?.touched">
+            <ion-text color="danger">
+              <small>Por favor ingresa tu usuario o correo electrónico</small>
+            </ion-text>
+          </div>
+
+          <ion-item [class.ion-invalid]="formularioLogin.get('clave')?.invalid && formularioLogin.get('clave')?.touched">
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input type="password" formControlName="clave" placeholder="••••••••"></ion-input>
+            <ion-icon name="lock-closed-outline" slot="end"></ion-icon>
+          </ion-item>
+          
+          <div class="error-text" *ngIf="formularioLogin.get('clave')?.invalid && formularioLogin.get('clave')?.touched">
+            <ion-text color="danger">
+              <small>La contraseña es requerida</small>
+            </ion-text>
+          </div>
+
+          <ion-button 
+            expand="full" 
+            type="submit" 
+            [disabled]="!formularioLogin.valid || isLoading"
+            class="login-button">
+            <ion-spinner *ngIf="isLoading" name="circles"></ion-spinner>
+            <span *ngIf="!isLoading">Ingresar</span>
+          </ion-button>
+
+          <!-- Botón de acceso rápido demo -->
+          <ion-button 
+            expand="full" 
+            fill="outline"
+            color="secondary"
+            (click)="loginDemo()"
+            [disabled]="isLoading"
+            class="demo-login-button">
+            <ion-icon name="flash" slot="start"></ion-icon>
+            Acceso Rápido Demo
+          </ion-button>
+
+          <!-- Enlaces de navegación -->
+          <div class="auth-links">
+            <ion-button fill="clear" color="medium" routerLink="/forgot-password">
+              ¿Olvidaste tu contraseña?
+            </ion-button>
+            
+            <div class="register-link">
+              <ion-text color="medium">
+                <span>¿No tienes cuenta? </span>
+              </ion-text>
+              <ion-button fill="clear" color="primary" routerLink="/register">
+                Regístrate aquí
+              </ion-button>
+            </div>
+          </div>
+
+          <div class="error-message" *ngIf="errorLogin">
+            <ion-item color="danger" class="error-item">
+              <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+              <ion-label>
+                <h3>Error de acceso</h3>
+                <p>Credenciales incorrectas. Verifica tu correo y contraseña.</p>
+              </ion-label>
+            </ion-item>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información de credenciales demo -->
+    <ion-card class="demo-info">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Credenciales de Prueba
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Usuario Demo:</h3>
+              <p>Usuario: usuario (o usuario&#64;demo.cl)</p>
+              <p>Contraseña: 1234</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Administrador:</h3>
+              <p>Usuario: admin (o admin&#64;demo.cl)</p>
+              <p>Contraseña: admin123</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        
+        <ion-note color="medium">
+          <p><strong>Nota:</strong> Estas son credenciales de demostración para probar la aplicación. En un entorno de producción, utiliza credenciales seguras y personalizadas.</p>
+        </ion-note>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

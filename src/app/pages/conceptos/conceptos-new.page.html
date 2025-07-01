@@ -1,0 +1,179 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Conceptos Legales</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleSearchMode()">
+        <ion-icon [name]="showSearch ? 'close' : 'search'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="conceptos-content">
+  <!-- Banner de conceptos -->
+  <div class="concepts-banner">
+    <div class="banner-content">
+      <ion-icon name="library" size="large" color="light"></ion-icon>
+      <h1>Conceptos del Derecho de Familia</h1>
+      <p>Normativa familiar chilena actualizada</p>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- Buscador de conceptos -->
+    <ion-card class="search-card" *ngIf="showSearch">
+      <ion-card-content>
+        <ion-searchbar 
+          [(ngModel)]="searchTerm"
+          (ionInput)="filterConcepts($event)"
+          placeholder="Buscar conceptos, artículos, leyes..."
+          show-clear-button="focus"
+          debounce="300">
+        </ion-searchbar>
+        
+        <div *ngIf="searchTerm && filteredConcepts.length === 0" class="no-results">
+          <ion-text color="medium">
+            <p>No se encontraron resultados para "{{ searchTerm }}"</p>
+          </ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Filtros por categorías -->
+    <ion-card class="filter-card" *ngIf="!showSearch">
+      <ion-card-header>
+        <ion-card-title>Categorías del Derecho de Familia</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-segment [(ngModel)]="selectedCategory" (ionChange)="onCategoryChange($event)">
+          <ion-segment-button value="todos">
+            <ion-label>Todos</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="matrimonio">
+            <ion-label>Matrimonio</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="filiacion">
+            <ion-label>Filiación</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="alimentos">
+            <ion-label>Alimentos</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="regimenes">
+            <ion-label>Regímenes</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de conceptos -->
+    <div class="concepts-grid">
+      <ion-card *ngFor="let concept of getDisplayConcepts()" class="concept-card" (click)="showConceptDetail(concept)">
+        <ion-card-header>
+          <div class="concept-header">
+            <ion-icon [name]="getCategoryIcon(concept.category)" [color]="getCategoryColor(concept.category)"></ion-icon>
+            <div class="concept-title-section">
+              <ion-card-title>{{ concept.title }}</ion-card-title>
+              <ion-badge [color]="getCategoryColor(concept.category)">{{ concept.category }}</ion-badge>
+            </div>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ concept.description }}</p>
+          <div class="concept-meta">
+            <ion-chip color="primary" outline>
+              <ion-icon name="document-text"></ion-icon>
+              <ion-label>{{ concept.articleRef }}</ion-label>
+            </ion-chip>
+            <ion-chip color="secondary" outline>
+              <ion-icon name="calendar"></ion-icon>
+              <ion-label>{{ concept.lastUpdated }}</ion-label>
+            </ion-chip>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Información complementaria -->
+    <ion-card class="info-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="information-circle" color="primary"></ion-icon>
+          Información Legal Importante
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="warning" slot="start" color="warning"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>Advertencia Legal</h3>
+              <p>Esta información es de carácter general y educativo. Para casos específicos, siempre consulte con un abogado especialista en derecho de familia.</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="library" slot="start" color="primary"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>Fuentes Legales</h3>
+              <p>Código Civil Chileno, Ley de Matrimonio Civil (19.947), Ley de Tribunales de Familia (19.968)</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="time" slot="start" color="secondary"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>Última Actualización</h3>
+              <p>Conceptos actualizados según la legislación vigente a {{ getCurrentDate() }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Enlaces útiles -->
+    <ion-card class="links-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="link" color="tertiary"></ion-icon>
+          Enlaces de Interés
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item button (click)="openExternalLink('https://www.bcn.cl/leychile/navegar?idNorma=172986')">
+            <ion-icon name="document" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h3>Código Civil - Libro Primero</h3>
+              <p>Biblioteca del Congreso Nacional</p>
+            </ion-label>
+            <ion-icon name="open" slot="end" color="medium"></ion-icon>
+          </ion-item>
+          <ion-item button (click)="openExternalLink('https://www.bcn.cl/leychile/navegar?idNorma=225128')">
+            <ion-icon name="heart" slot="start" color="danger"></ion-icon>
+            <ion-label>
+              <h3>Ley de Matrimonio Civil</h3>
+              <p>Ley N° 19.947</p>
+            </ion-label>
+            <ion-icon name="open" slot="end" color="medium"></ion-icon>
+          </ion-item>
+          <ion-item button (click)="openExternalLink('https://www.bcn.cl/leychile/navegar?idNorma=229557')">
+            <ion-icon name="business" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <h3>Ley de Tribunales de Familia</h3>
+              <p>Ley N° 19.968</p>
+            </ion-label>
+            <ion-icon name="open" slot="end" color="medium"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- FAB para agregar concepto (solo admin) -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isAdmin">
+    <ion-fab-button color="secondary" (click)="addConcept()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

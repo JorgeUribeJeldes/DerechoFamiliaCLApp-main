@@ -1,0 +1,179 @@
+<ion-menu contentId="main-content" type="overlay">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngIf="currentUser">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h3>Usuario: {{ currentUser }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item [routerLink]="'/inicio'" (click)="menu.close()">
+        <ion-icon name="home-outline" slot="start"></ion-icon>
+        Inicio
+      </ion-item>
+      <ion-item [routerLink]="'/conceptos'" (click)="menu.close()">
+        <ion-icon name="book-outline" slot="start"></ion-icon>
+        Conceptos
+      </ion-item>
+      <ion-item [routerLink]="'/preguntas-frecuentes'" (click)="menu.close()">
+        <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+        Preguntas Frecuentes
+      </ion-item>
+      <ion-item [routerLink]="'/contacto'" (click)="menu.close()">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        Contacto
+      </ion-item>
+      <ion-item (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar sesión
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Derecho Familia CL</ion-title>
+    <ion-buttons slot="end">
+      <ion-badge [color]="getConnectionStatusColor()">
+        {{ getConnectionStatusText() }}
+      </ion-badge>
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content" class="ion-padding">
+  <!-- Card de bienvenida con ubicación -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="titulo">¡Bienvenido{{ currentUser ? ', ' + currentUser : '' }}!</ion-card-title>
+      <ion-card-subtitle>
+        <div *ngIf="isLoadingLocation; else locationLoaded">
+          <ion-spinner name="dots"></ion-spinner> Obteniendo ubicación...
+        </div>
+        <ng-template #locationLoaded>
+          <div *ngIf="currentLocation">
+            <ion-icon name="location-outline"></ion-icon>
+            {{ getLocationText() }}
+            <ion-button fill="clear" size="small" (click)="refreshLocation()">
+              <ion-icon name="refresh-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ng-template>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Accede a información sobre Derecho de Familia chileno actualizada y confiable.</p>
+      <div *ngIf="showCachedWarning" class="cached-warning">
+        <ion-icon name="warning-outline" color="warning"></ion-icon>
+        <ion-text color="warning">Mostrando datos guardados (sin conexión)</ion-text>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Conceptos legales recientes -->
+  <ion-card *ngIf="legalConcepts.length > 0">
+    <ion-card-header>
+      <ion-card-title>
+        Conceptos Legales Recientes
+        <ion-button fill="clear" size="small" (click)="refreshData()" [disabled]="isLoadingConcepts">
+          <ion-spinner *ngIf="isLoadingConcepts" name="dots"></ion-spinner>
+          <ion-icon *ngIf="!isLoadingConcepts" name="refresh-outline"></ion-icon>
+        </ion-button>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let concept of legalConcepts.slice(0, 5)">
+          <ion-label>
+            <h3>{{ concept.title }}</h3>
+            <p>{{ concept.description }}</p>
+            <ion-badge color="secondary">{{ concept.category }}</ion-badge>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Accesos rápidos -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Accesos Rápidos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" fill="outline" (click)="navigateToPage('conceptos')">
+              <ion-icon name="book-outline" slot="start"></ion-icon>
+              Conceptos
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="block" fill="outline" (click)="navigateToPage('preguntas-frecuentes')">
+              <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+              FAQ
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" fill="outline" (click)="navigateToPage('contacto')">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              Contacto
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="block" fill="outline" (click)="refreshLocation()">
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              Ubicación
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Estado de la aplicación -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Estado del Sistema</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon name="wifi-outline" slot="start" [color]="getConnectionStatusColor()"></ion-icon>
+          <ion-label>
+            <h3>Conexión</h3>
+            <p>{{ getConnectionStatusText() }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="currentLocation">
+          <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h3>Ubicación</h3>
+            <p>{{ getLocationText() }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="library-outline" slot="start" color="secondary"></ion-icon>
+          <ion-label>
+            <h3>Conceptos Cargados</h3>
+            <p>{{ legalConcepts.length }} conceptos disponibles</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

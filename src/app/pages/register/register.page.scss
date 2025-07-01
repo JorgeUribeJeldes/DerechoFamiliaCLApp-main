@@ -1,0 +1,169 @@
+.register-content {
+  --background: linear-gradient(135deg, var(--ion-color-primary-tint) 0%, var(--ion-color-secondary-tint) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.register-card {
+  margin: 0;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.text-center {
+  text-align: center;
+  
+  h1 {
+    margin: 0.5rem 0;
+    color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+  
+  ion-icon {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.password-strength {
+  margin-top: 0.5rem;
+  padding: 0 1rem;
+  
+  ion-progress-bar {
+    margin: 0.25rem 0;
+    height: 4px;
+    border-radius: 2px;
+  }
+}
+
+.password-requirements {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(var(--ion-color-danger-rgb), 0.1);
+  border-radius: 8px;
+  border-left: 3px solid var(--ion-color-danger);
+}
+
+.password-success {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(var(--ion-color-success-rgb), 0.1);
+  border-radius: 8px;
+  border-left: 3px solid var(--ion-color-success);
+}
+
+.error-message {
+  padding: 0.5rem 1rem;
+  
+  small {
+    display: block;
+  }
+}
+
+.terms-label {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    margin: 0;
+    height: auto;
+    text-decoration: underline;
+  }
+}
+
+.register-button {
+  margin-top: 1.5rem;
+  height: 48px;
+  font-weight: 600;
+  font-size: 1rem;
+  
+  ion-spinner {
+    margin-right: 0.5rem;
+  }
+}
+
+// Validación visual
+ion-item {
+  --border-color: var(--ion-color-light);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  
+  &.ion-invalid {
+    --border-color: var(--ion-color-danger);
+    --highlight-color: var(--ion-color-danger);
+  }
+  
+  &.ion-valid {
+    --border-color: var(--ion-color-success);
+    --highlight-color: var(--ion-color-success);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .register-content {
+    padding: 0.5rem;
+  }
+  
+  .register-card {
+    border-radius: 12px;
+  }
+}
+
+// Modo oscuro
+body.dark {
+  .register-content {
+    --background: linear-gradient(135deg, var(--ion-color-primary-shade) 0%, var(--ion-color-secondary-shade) 100%);
+  }
+  
+  .register-card {
+    background: rgba(var(--ion-color-dark-rgb), 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .password-requirements {
+    background: rgba(var(--ion-color-danger-rgb), 0.2);
+  }
+  
+  .password-success {
+    background: rgba(var(--ion-color-success-rgb), 0.2);
+  }
+}
+
+// Animaciones
+.register-card {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+ion-button {
+  transition: all 0.3s ease;
+  
+  &:hover:not([disabled]) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+}

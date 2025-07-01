@@ -1,0 +1,71 @@
+// Banner
+.banner-container {
+  background: linear-gradient(135deg, var(--ion-color-secondary), var(--ion-color-tertiary));
+  padding: 24px 16px;
+  margin: 16px;
+  border-radius: 16px;
+  text-align: center;
+  
+  .banner-content {
+    h1 { color: white; font-size: 1.8rem; font-weight: 600; margin: 0 0 8px 0; }
+    p { color: rgba(255, 255, 255, 0.9); font-size: 1rem; margin: 0; }
+  }
+}
+
+// Cards base
+.info-card, .contact-form-card, .services-card, .schedule-card {
+  margin: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  
+  .card-header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    ion-icon { font-size: 1.5rem; }
+    ion-card-title { font-size: 1.3rem; font-weight: 600; margin: 0; }
+  }
+}
+
+// Información de contacto
+.contact-info .contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--ion-color-light);
+  
+  &:last-child { border-bottom: none; }
+  
+  ion-icon { font-size: 1.5rem; }
+  
+  div {
+    flex: 1;
+    p { margin: 0 0 4px 0; &:first-child { font-weight: 600; } }
+  }
+}
+
+// Formulario
+.contact-form .form-section {
+  margin-bottom: 24px;
+  
+  h3 { font-size: 1.1rem; font-weight: 600; margin: 0 0 16px 0; }
+  ion-item { margin-bottom: 12px; }
+}
+
+// Servicios
+.services-list .service-item {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--ion-color-light);
+  
+  &:last-child { border-bottom: none; }
+  
+  h4 { font-size: 1.1rem; font-weight: 600; margin: 0 0 8px 0; }
+  p { margin: 0; font-size: 0.9rem; }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .banner-container, .info-card, .contact-form-card, .services-card, .schedule-card { margin: 8px; }
+}

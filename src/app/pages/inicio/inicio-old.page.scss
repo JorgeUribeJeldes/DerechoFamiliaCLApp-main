@@ -1,0 +1,121 @@
+.banner-container {
+  width: 100%;
+  height: 200px;
+  background: url('/assets/img/inicio-banner.png') no-repeat center center;
+  background-size: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.titulo {
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cached-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px;
+  background-color: var(--ion-color-warning-tint);
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+ion-card {
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+ion-card-header {
+  padding-bottom: 8px;
+}
+
+ion-card-title {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+}
+
+ion-list {
+  padding: 0;
+}
+
+ion-item {
+  --border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+ion-button {
+  --border-radius: 8px;
+  margin: 4px 0;
+}
+
+ion-badge {
+  margin-left: 8px;
+}
+
+.status-item {
+  --background: var(--ion-color-light);
+  border-radius: 8px;
+  margin: 4px 0;
+}
+
+// Estilo para el menú lateral
+ion-menu ion-list {
+  padding-top: 8px;
+}
+
+ion-menu ion-item {
+  --padding-start: 16px;
+  margin: 4px 8px;
+  border-radius: 8px;
+}
+
+ion-menu ion-item:hover {
+  --background: var(--ion-color-primary-tint);
+}
+
+// Responsive design
+@media (min-width: 768px) {
+  ion-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+// Animaciones adicionales
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

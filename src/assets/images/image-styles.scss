@@ -1,0 +1,165 @@
+/* Estilos para imágenes - DerechoFamiliaCLApp */
+
+/* === BANNERS === */
+.hero-banner {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(80, 200, 255, 0.1));
+  z-index: 1;
+}
+
+.hero-banner-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Banners específicos por página */
+.login-banner {
+  background-image: url('../images/banners/login-banner.jpg');
+}
+
+.inicio-banner {
+  background-image: url('../images/banners/inicio-hero.jpg');
+}
+
+.conceptos-banner {
+  background-image: url('../images/banners/conceptos-header.jpg');
+}
+
+.faq-banner {
+  background-image: url('../images/banners/faq-banner.jpg');
+}
+
+.contacto-banner {
+  background-image: url('../images/banners/contacto-header.jpg');
+}
+
+/* === LOGOS === */
+.app-logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.app-logo-small {
+  width: 48px;
+  height: 48px;
+}
+
+.app-logo-horizontal {
+  width: 200px;
+  height: auto;
+}
+
+/* === ICONOS DE CATEGORÍAS === */
+.category-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.category-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--ion-color-light);
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 77, 255, 0.15);
+}
+
+/* === PLACEHOLDERS === */
+.image-placeholder {
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  position: relative;
+}
+
+.image-placeholder::before {
+  content: '📷';
+  font-size: 24px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Placeholders específicos */
+.banner-placeholder {
+  height: 200px;
+}
+
+.logo-placeholder {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.icon-placeholder {
+  width: 48px;
+  height: 48px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 150px;
+  }
+  
+  .app-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .category-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* === DARK MODE === */
+body.dark {
+  .image-placeholder {
+    background: linear-gradient(135deg, #2d2d2d, #3d3d3d);
+    border-color: #555;
+    color: #aaa;
+  }
+  
+  .category-card {
+    background: var(--ion-color-dark);
+  }
+}

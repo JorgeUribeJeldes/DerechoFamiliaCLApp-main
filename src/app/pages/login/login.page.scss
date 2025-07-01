@@ -1,0 +1,173 @@
+ion-content {
+  --background: linear-gradient(135deg, var(--ion-color-primary-tint) 0%, var(--ion-color-secondary-tint) 100%);
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.app-logo {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  ion-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+  
+  h1 {
+    color: var(--ion-color-primary);
+    margin: 0.5rem 0;
+    font-weight: 600;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.login-card,
+.demo-info {
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-button {
+  margin: 1.5rem 0 1rem 0;
+  height: 48px;
+  font-weight: 600;
+}
+
+// Botón de acceso rápido demo
+.demo-login-button {
+  margin-top: 8px;
+  --border-width: 2px;
+  --border-style: dashed;
+}
+
+.auth-links {
+  text-align: center;
+  margin: 1rem 0;
+  
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    margin: 0.25rem 0;
+    height: auto;
+    font-size: 0.9rem;
+  }
+  
+  .register-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    
+    span {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.error-text {
+  padding: 0.25rem 1rem;
+}
+
+.error-message {
+  margin-top: 1rem;
+  
+  .error-item {
+    border-radius: 8px;
+    --inner-border-width: 0;
+  }
+}
+
+.demo-info {
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ion-color-primary);
+    font-size: 1rem;
+  }
+  
+  ion-item {
+    --border-color: transparent;
+    --background: transparent;
+  }
+}
+
+// Validación visual
+ion-item {
+  --border-color: var(--ion-color-light);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  
+  &.ion-invalid {
+    --border-color: var(--ion-color-danger);
+    --highlight-color: var(--ion-color-danger);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .app-logo {
+    ion-icon {
+      font-size: 3rem;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+// Modo oscuro
+body.dark {
+  ion-content {
+    --background: linear-gradient(135deg, var(--ion-color-primary-shade) 0%, var(--ion-color-secondary-shade) 100%);
+  }
+  
+  .login-card,
+  .demo-info {
+    background: rgba(var(--ion-color-dark-rgb), 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Animaciones
+.login-card,
+.demo-info {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+ion-button {
+  transition: all 0.3s ease;
+  
+  &:hover:not([disabled]) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+}

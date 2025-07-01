@@ -1,0 +1,20 @@
+// App Global CSS - Optimizado
+// Core CSS requerido para componentes Ionic
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+// CSS utilitarios opcionales
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+// Modo oscuro automático del sistema
+@import '@ionic/angular/css/palettes/dark.system.css';
+
+// Estilos para imágenes
+@import 'assets/images/image-styles.scss';

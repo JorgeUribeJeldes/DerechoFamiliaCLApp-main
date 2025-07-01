@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Conceptos Legales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="conceptos-content">
+  <!-- Banner de conceptos -->
+  <div class="hero-banner conceptos-banner">
+    <div class="hero-banner-content">
+      <div class="category-icon image-placeholder icon-placeholder" style="margin-bottom: 16px;">
+        📚
+      </div>
+      <h1>Conceptos Legales</h1>
+      <p>Guía completa del derecho de familia chileno</p>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- Buscador de conceptos -->
+    <ion-card class="search-card">
+      <ion-card-content>
+        <ion-searchbar 
+          [(ngModel)]="searchTerm"
+          (ionInput)="filterConcepts($event)"
+          placeholder="Buscar conceptos legales..."
+          show-clear-button="focus"
+          debounce="300">
+        </ion-searchbar>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Filtros por categoría -->
+    <ion-card class="filter-card">
+      <ion-card-content>
+        <ion-segment [(ngModel)]="selectedCategory" (ionChange)="onCategoryChange($event)">
+          <ion-segment-button value="todas">
+            <ion-label>Todas</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="matrimonio">
+            <ion-label>Matrimonio</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="filiacion">
+            <ion-label>Filiación</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="alimentos">
+            <ion-label>Alimentos</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="patrimonio">
+            <ion-label>Patrimonio</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="proteccion">
+            <ion-label>Protección</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de conceptos -->
+    <div class="concepts-grid">
+      <ion-card *ngFor="let concepto of filteredConcepts" class="concept-card" button (click)="showConceptDetail(concepto)">
+        <ion-card-header>
+          <div class="concept-header">
+            <ion-icon [name]="concepto.icono" [color]="concepto.color" size="large"></ion-icon>
+            <div class="concept-title">
+              <ion-card-title>{{ concepto.titulo }}</ion-card-title>
+              <ion-badge [color]="concepto.color">{{ concepto.categoria }}</ion-badge>
+            </div>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ concepto.resumen }}</p>
+          <div class="concept-meta">
+            <ion-chip color="medium" outline>
+              <ion-icon name="document-text"></ion-icon>
+              <ion-label>{{ concepto.articulos }} artículos</ion-label>
+            </ion-chip>
+            <ion-chip color="medium" outline>
+              <ion-icon name="time"></ion-icon>
+              <ion-label>{{ concepto.lectura }}</ion-label>
+            </ion-chip>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Mensaje si no hay resultados -->
+    <div *ngIf="filteredConcepts.length === 0" class="no-results">
+      <ion-card>
+        <ion-card-content class="text-center">
+          <ion-icon name="search" size="large" color="medium"></ion-icon>
+          <h3>No se encontraron conceptos</h3>
+          <p>Intenta con otros términos de búsqueda o cambia el filtro de categoría.</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

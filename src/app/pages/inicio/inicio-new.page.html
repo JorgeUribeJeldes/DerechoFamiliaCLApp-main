@@ -1,0 +1,235 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Derecho Familia CL</ion-title>
+    <ion-buttons slot="end">
+      <ion-badge [color]="getConnectionStatusColor()">
+        {{ getConnectionStatusText() }}
+      </ion-badge>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="inicio-content">
+  <!-- Banner principal -->
+  <div class="banner-container">
+    <img src="assets/images/banner-derecho-familia.jpg" alt="Derecho de Familia" class="banner-image" 
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <div class="banner-fallback" style="display: none;">
+      <ion-icon name="balance" size="large" color="primary"></ion-icon>
+      <h2>Derecho de Familia Chileno</h2>
+    </div>
+    <div class="banner-overlay">
+      <h1>Bienvenido{{ currentUser ? ', ' + currentUser : '' }}</h1>
+      <p>Tu guía completa en derecho familiar chileno</p>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- Buscador de contenidos -->
+    <ion-card class="search-card">
+      <ion-card-content>
+        <ion-searchbar 
+          [(ngModel)]="searchTerm"
+          (ionInput)="onSearchInput($event)"
+          placeholder="Buscar conceptos legales, artículos, FAQ..."
+          show-clear-button="focus"
+          debounce="300">
+        </ion-searchbar>
+        
+        <!-- Resultados de búsqueda -->
+        <div *ngIf="searchResults.length > 0" class="search-results">
+          <ion-list>
+            <ion-item *ngFor="let result of searchResults" button (click)="navigateToResult(result)">
+              <ion-icon [name]="getResultIcon(result.type)" slot="start" [color]="getResultColor(result.type)"></ion-icon>
+              <ion-label>
+                <h3>{{ result.title }}</h3>
+                <p>{{ result.description }}</p>
+                <ion-badge [color]="getResultColor(result.type)">{{ result.type }}</ion-badge>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+        
+        <div *ngIf="searchTerm && searchResults.length === 0" class="no-results">
+          <ion-text color="medium">
+            <p>No se encontraron resultados para "{{ searchTerm }}"</p>
+          </ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información de ubicación -->
+    <ion-card class="location-card">
+      <ion-card-content>
+        <div class="location-info">
+          <div *ngIf="isLoadingLocation; else locationLoaded" class="loading-location">
+            <ion-spinner name="dots"></ion-spinner>
+            <span>Obteniendo ubicación...</span>
+          </div>
+          <ng-template #locationLoaded>
+            <div *ngIf="currentLocation" class="location-content">
+              <ion-icon name="location" color="primary"></ion-icon>
+              <span>{{ getLocationText() }}</span>
+              <ion-button fill="clear" size="small" (click)="refreshLocation()">
+                <ion-icon name="refresh"></ion-icon>
+              </ion-button>
+            </div>
+          </ng-template>
+        </div>
+        
+        <div *ngIf="showCachedWarning" class="cached-warning">
+          <ion-icon name="warning" color="warning"></ion-icon>
+          <ion-text color="warning">Datos guardados (sin conexión)</ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Accesos rápidos -->
+    <ion-card class="quick-access-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="flash" color="primary"></ion-icon>
+          Accesos Rápidos
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" routerLink="/conceptos" class="quick-button">
+                <div class="quick-button-content">
+                  <ion-icon name="library"></ion-icon>
+                  <span>Conceptos</span>
+                </div>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" routerLink="/faq" class="quick-button">
+                <div class="quick-button-content">
+                  <ion-icon name="help-circle"></ion-icon>
+                  <span>FAQ</span>
+                </div>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" routerLink="/contacto" class="quick-button">
+                <div class="quick-button-content">
+                  <ion-icon name="mail"></ion-icon>
+                  <span>Contacto</span>
+                </div>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" (click)="showLegalCalculator()" class="quick-button">
+                <div class="quick-button-content">
+                  <ion-icon name="calculator"></ion-icon>
+                  <span>Calculadora</span>
+                </div>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Conceptos legales destacados -->
+    <ion-card *ngIf="legalConcepts.length > 0" class="concepts-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="bookmark" color="legal"></ion-icon>
+          Conceptos Legales Destacados
+          <ion-button fill="clear" size="small" (click)="refreshData()" [disabled]="isLoadingConcepts">
+            <ion-spinner *ngIf="isLoadingConcepts" name="dots"></ion-spinner>
+            <ion-icon *ngIf="!isLoadingConcepts" name="refresh"></ion-icon>
+          </ion-button>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let concept of legalConcepts.slice(0, 5)" button (click)="viewConceptDetail(concept)">
+            <ion-icon name="document-text" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h3>{{ concept.title }}</h3>
+              <p>{{ concept.body | slice:0:100 }}...</p>
+            </ion-label>
+            <ion-icon name="chevron-forward" slot="end" color="medium"></ion-icon>
+          </ion-item>
+        </ion-list>
+        
+        <ion-button expand="block" fill="clear" routerLink="/conceptos" class="view-all-button">
+          Ver todos los conceptos
+          <ion-icon name="arrow-forward" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Artículos recientes del Código Civil -->
+    <ion-card class="articles-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="document" color="justice"></ion-icon>
+          Artículos del Código Civil
+        </ion-card-title>
+        <ion-card-subtitle>Derecho de Familia - Chile</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Art. 102 - Matrimonio</h3>
+              <p>El matrimonio es un contrato solemne por el cual un hombre y una mujer se unen actual e indisolublemente...</p>
+            </ion-label>
+            <ion-badge color="primary" slot="end">Vigente</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Art. 225 - Patria Potestad</h3>
+              <p>La patria potestad es el conjunto de derechos y deberes que corresponden al padre o a la madre...</p>
+            </ion-label>
+            <ion-badge color="primary" slot="end">Vigente</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Art. 321 - Alimentos</h3>
+              <p>Se deben alimentos al cónyuge, a los descendientes, a los ascendientes...</p>
+            </ion-label>
+            <ion-badge color="primary" slot="end">Vigente</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Noticias y actualizaciones -->
+    <ion-card class="news-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="newspaper" color="secondary"></ion-icon>
+          Últimas Actualizaciones Legales
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="calendar" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <h3>Nueva Ley de Adopción</h3>
+              <p>Modificaciones importantes en el proceso de adopción en Chile</p>
+              <ion-note>Enero 2024</ion-note>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="calendar" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <h3>Actualización en Pensión Alimenticia</h3>
+              <p>Nuevos criterios para el cálculo de pensiones alimenticias</p>
+              <ion-note>Diciembre 2023</ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
